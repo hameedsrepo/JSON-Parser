@@ -35,3 +35,4 @@ Given a set of JSON objects (in a file is fine), for each unique ID field show t
 *Invalid JSON?
 * Same as above, throw exception/log error
 * Can I assume English will only be used in the JSON?
+* Assuming 1 entry per line: no more, no less
