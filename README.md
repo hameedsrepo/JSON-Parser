@@ -32,9 +32,14 @@ Given a set of JSON objects (in a file is fine), for each unique ID field show t
 * Should the application be able to handle invalid scores? Say if a string is passed in or non-numeric value?
 * Invalid IP addresses? 
 * I would probably throw an exception or log such a case as an error.  Will that suffice?
-*Invalid JSON?
+* Invalid JSON?
 * Same as above, throw exception/log error
 * Can I assume English will only be used in the JSON?
 
 ##Assumptions/Requirements
 * Assuming 1 entry per line of source file: no more, no less
+
+## Instructions:
+* VS will be requried in order to open and run this solution correctly
+* Once upon, you can set JSON Parser as your start up project and press F5 to start the console application
+ * enter location of source JSON file (must be in format listed above)
