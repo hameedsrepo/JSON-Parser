@@ -2,6 +2,9 @@
 using System;
 using System.IO;
 using JSON_Parser.DTOs;
+using System.Collections.Generic;
+using System.Linq;
+using JSON_Parser.Validation;
 
 namespace JSON_Parser
 {
@@ -27,22 +30,49 @@ namespace JSON_Parser
 
                 try
                 {
-                    IncomingDTO incomingDTO = loadJson(fileLocation);
-                    Console.WriteLine($"id: {incomingDTO.id}  score: {incomingDTO.score}  ip: {incomingDTO.ip}");
+                    List<IncomingDTO> incomingDTOs = loadJson(fileLocation);
+
+                    var resultSet = incomingDTOs
+                        .GroupBy(x => x.id);
+
+                    //TO DO: figure out correct LINQ statement
+                    //from i in incomingDTOs
+                    //group i by i.id into g
+                    //select new ResultDTO
+                    //{
+                    //    id = g.Key,
+                    //    scoreSum = g.Sum(x => x.score), 
+                    //    count = 0, 
+                    //    ip = ""
+                    //};
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    Console.WriteLine($"{e.Message}.\n {e.StackTrace}");
+                    Console.WriteLine($"{e.Message}.\n{e.StackTrace}");
                 }
             } while (!string.IsNullOrEmpty(fileLocation));
         }
 
-        static IncomingDTO loadJson(string jsonPath)
+        static List<IncomingDTO> loadJson(string jsonPath)
         {
-            using (StreamReader reader = new StreamReader(jsonPath))
+            List<IncomingDTO> retVal = new List<IncomingDTO>();
+            try
             {
-                string json = reader.ReadToEnd();
-                return JsonConvert.DeserializeObject<IncomingDTO>(json);
+                using (StreamReader reader = new StreamReader(jsonPath))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        string jsonLine = reader.ReadLine(); //assuming 1 entry per line
+                        //verify jsonLine is a valid JSON
+                        if(!String.IsNullOrEmpty(jsonLine) && JsonValidator.isValidJson(jsonLine))
+                            retVal.Add(JsonConvert.DeserializeObject<IncomingDTO>(jsonLine));
+                    }
+                    return retVal;
+                }
+            }
+            catch(Exception e)
+            {
+                throw;
             }
         }
     }

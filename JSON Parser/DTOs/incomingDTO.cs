@@ -15,4 +15,13 @@ namespace JSON_Parser.DTOs
         public int score { get; set; }
         public string ip { get; set; }
     }
+
+    class ResultDTO
+    {
+        public string id { get; set; }
+        public int scoreSum { get; set; }
+        public string ip { get; set; }
+        public int count { get; set; }
+
+    }
 }
