@@ -33,18 +33,34 @@ namespace JSON_Parser
                     List<IncomingDTO> incomingDTOs = loadJson(fileLocation);
 
                     var resultSet = incomingDTOs
-                        .GroupBy(x => x.id);
+                        .GroupBy(x => new { x.id, x.ip })
+                        .Select(
+                            g => new
+                            {
+                                Key = g.Key,
+                                ipCount = g.Count()
+                            });
 
-                    //TO DO: figure out correct LINQ statement
-                    //from i in incomingDTOs
-                    //group i by i.id into g
-                    //select new ResultDTO
-                    //{
-                    //    id = g.Key,
-                    //    scoreSum = g.Sum(x => x.score), 
-                    //    count = 0, 
-                    //    ip = ""
-                    //};
+                    var resultSetForScoreSum = incomingDTOs
+                        .GroupBy(x => x.id)
+                        .Select(
+                            g => new
+                            {
+                                Key = g.Key,
+                                SumScore = g.Sum(s => s.score),
+                            });
+
+                    Console.WriteLine("The output is:\n");
+                    foreach (var x in resultSetForScoreSum)
+                    {
+                        Console.WriteLine(x.Key);
+                        foreach (var y in resultSet)
+                        {
+                            if(x.Key == y.Key.id)
+                            Console.WriteLine($"{y.Key.ip}:{y.ipCount}");
+                        }
+                        Console.WriteLine(x.SumScore);
+                    }
                 }
                 catch (Exception e)
                 {
