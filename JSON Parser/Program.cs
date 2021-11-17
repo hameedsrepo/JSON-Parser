@@ -57,7 +57,7 @@ namespace JSON_Parser
                         foreach (var y in resultSet)
                         {
                             if(x.Key == y.Key.id)
-                            Console.WriteLine($"{y.Key.ip}:{y.ipCount}");
+                                Console.WriteLine($"{y.Key.ip}:{y.ipCount}");
                         }
                         Console.WriteLine(x.SumScore);
                     }
