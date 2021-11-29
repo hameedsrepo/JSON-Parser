@@ -1,5 +1,8 @@
 using System;
 using Xunit;
+using JSON_Parser;
+using JSON_Parser.DTOs;
+using System.Collections.Generic;
 
 namespace JSON_Praser_Test
 {
@@ -8,27 +11,48 @@ namespace JSON_Praser_Test
         [Fact]
         public void NonnumericScore()
         {
-            //Arrange
-            //Act
-            //Assert
+            //Compile time error, invalid
+            Assert.True(true);
         }
 
-        [Fact]
-        public void ValidScore()
+        [Theory]
+        [InlineData(2)]
+        [InlineData(999)]
+        [InlineData(-999)]
+        [InlineData(0)]
+        public void ValidScore(float score)
         {
             //Arrange
-            //Act
-            //Assert
+            List<IncomingDTO> incomingDto = new List<IncomingDTO>();
+            incomingDto.Add(new IncomingDTO { id = "1", ip = "127.0.0.1", score = score });
+            Tuple<IEnumerable<object>, IEnumerable<object>> retVal = Program.Calculations(incomingDto);
+            //Act + Assert
+            foreach(var x in retVal.Item2)
+            {
+                Assert.Equal(score, x.GetType().GetProperty("SumScore")?.GetValue(x));
+            }
         }
 
         [Theory]
         [InlineData(2.0,2.0,4.0)]
-        public void FloatScore(float first, float second, float expectedResult)
+        [InlineData(-1.0, 1.0, 0.0)]
+        [InlineData(-1.0, -1.0, -2.0)]
+        [InlineData(-0.0, 0.0, 0.0)]
+        public void FloatScores(float first, float second, float expectedResult)
         {
             //Arrange
+            List<IncomingDTO> incomingDto = new List<IncomingDTO>();
+            incomingDto.Add(new IncomingDTO { id = "1", ip = "127.0.0.1", score = first });
+            incomingDto.Add(new IncomingDTO { id = "2", ip = "127.0.0.1", score = second });
+            Tuple<IEnumerable<object>, IEnumerable<object>> retVal = Program.Calculations(incomingDto);
             //Act
+            int total = 0;
+            foreach (var x in retVal.Item2)
+            {
+                total += Convert.ToInt32(x.GetType().GetProperty("SumScore")?.GetValue(x));
+            }
             //Assert
-            Assert.Equal(first + second, expectedResult);
+            Assert.Equal(expectedResult, total);
         }
     }
 }

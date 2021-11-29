@@ -16,9 +16,9 @@ namespace JSON_Parser
     ///     - summing the scores within a set of unique IDs
     ///     - displaying the resulsts on the console
     /// </summary>
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             string fileLocation;
             do
@@ -30,37 +30,8 @@ namespace JSON_Parser
 
                 try
                 {
-                    List<IncomingDTO> incomingDTOs = loadJson(fileLocation);
-
-                    var resultSet = incomingDTOs
-                        .GroupBy(x => new { x.id, x.ip })
-                        .Select(
-                            g => new
-                            {
-                                Key = g.Key,
-                                ipCount = g.Count()
-                            });
-
-                    var resultSetForScoreSum = incomingDTOs
-                        .GroupBy(x => x.id)
-                        .Select(
-                            g => new
-                            {
-                                Key = g.Key,
-                                SumScore = g.Sum(s => s.score),
-                            });
-
-                    Console.WriteLine("The output is:\n");
-                    foreach (var x in resultSetForScoreSum)
-                    {
-                        Console.WriteLine(x.Key);
-                        foreach (var y in resultSet)
-                        {
-                            if(x.Key == y.Key.id)
-                                Console.WriteLine($"{y.Key.ip}:{y.ipCount}");
-                        }
-                        Console.WriteLine(x.SumScore);
-                    }
+                    List<IncomingDTO> incomingDTOs = LoadJson(fileLocation);
+                    Calculations(incomingDTOs);                    
                 }
                 catch (Exception e)
                 {
@@ -69,7 +40,48 @@ namespace JSON_Parser
             } while (!string.IsNullOrEmpty(fileLocation));
         }
 
-        static List<IncomingDTO> loadJson(string jsonPath)
+        public static Tuple<IEnumerable<object>, IEnumerable<object>> Calculations(List<IncomingDTO> incomingDTOs)
+        {
+            try
+            {
+                var resultSet = incomingDTOs
+                            .GroupBy(x => new { x.id, x.ip })
+                            .Select(
+                                g => new
+                                {
+                                    Key = g.Key,
+                                    ipCount = g.Count()
+                                });
+
+                var resultSetForScoreSum = incomingDTOs
+                    .GroupBy(x => x.id)
+                    .Select(
+                        g => new
+                        {
+                            Key = g.Key,
+                            SumScore = g.Sum(s => s.score),
+                        });
+
+                Console.WriteLine("The output is:\n");
+                foreach (var x in resultSetForScoreSum)
+                {
+                    Console.WriteLine(x.Key);
+                    foreach (var y in resultSet)
+                    {
+                        if (x.Key == y.Key.id)
+                            Console.WriteLine($"{y.Key.ip}:{y.ipCount}");
+                    }
+                    Console.WriteLine(x.SumScore);
+                }
+
+                Tuple<IEnumerable<object>, IEnumerable<object>> retVal = new Tuple<IEnumerable<object>, IEnumerable<object>>(resultSet, resultSetForScoreSum);
+
+                return retVal; //used for unit testing purposes
+            }
+            catch (Exception) { throw; }
+        }
+
+        public static List<IncomingDTO> LoadJson(string jsonPath)
         {
             List<IncomingDTO> retVal = new List<IncomingDTO>();
             try
@@ -86,10 +98,7 @@ namespace JSON_Parser
                     return retVal;
                 }
             }
-            catch(Exception e)
-            {
-                throw;
-            }
+            catch(Exception) { throw; }
         }
     }
 }
