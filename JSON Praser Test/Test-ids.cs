@@ -59,7 +59,7 @@ namespace JSON_Praser_Test
                 ipCount += Convert.ToInt32(x.GetType().GetProperty("ipCount")?.GetValue(x));
             }
             //Assert
-            Assert.Equal(1, ipCount);
+            Assert.Equal(2, ipCount);
         }
 
         [Theory]

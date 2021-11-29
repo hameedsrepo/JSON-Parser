@@ -46,6 +46,7 @@ namespace JSON_Parser
             {
                 var resultSet = incomingDTOs
                             .GroupBy(x => new { x.id, x.ip })
+                            .Where(filter =>!String.IsNullOrEmpty(filter.Key.id)) //if no ID provided do not account for it
                             .Select(
                                 g => new
                                 {
