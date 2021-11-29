@@ -1,6 +1,8 @@
 # JSON-Parser
 This project was created with the intent of completing a coding assessment for Opentext/Webroot.
 
+This solution requires Visual Studio 2019 (Community edition is available from the MSDN website free of charge)
+
 ## **The Problem:**
 Given a set of JSON objects (in a file is fine), for each unique ID field show the unique IPs associated with it and the number of times that IP appeared.  Also, sum the score for that ID.  Make no assumptions about the incoming JSON.
 
