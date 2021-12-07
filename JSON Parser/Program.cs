@@ -5,6 +5,7 @@ using JSON_Parser.DTOs;
 using System.Collections.Generic;
 using System.Linq;
 using JSON_Parser.Validation;
+using System.Diagnostics;
 
 namespace JSON_Parser
 {
@@ -21,23 +22,30 @@ namespace JSON_Parser
         public static void Main(string[] args)
         {
             string fileLocation;
-            do
-            {
-                Console.WriteLine("Welcome to the JSON Parser.  My job is to group unique IDs, give counts of IPs with the same unique ID and sum the entire score by ID.");
-                Console.WriteLine("Please specify a location to your JSON file to be analyzed:");
+            //do
+            //{
 
+            Console.WriteLine("Welcome to the JSON Parser.  My job is to group unique IDs, give counts of IPs with the same unique ID and sum the entire score by ID.");
+            Console.WriteLine("Please specify a location to your JSON file to be analyzed:");
+            #if DEBUG
+            Debugger.Launch(); 
+            #endif
+            if (args.Length > 0)
+                fileLocation = args.First();
+
+            else
                 fileLocation = Console.ReadLine();
 
-                try
-                {
-                    List<IncomingDTO> incomingDTOs = LoadJson(fileLocation);
-                    Calculations(incomingDTOs);                    
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"{e.Message}.\n{e.StackTrace}");
-                }
-            } while (!string.IsNullOrEmpty(fileLocation));
+            try
+            {
+                List<IncomingDTO> incomingDTOs = LoadJson(fileLocation);
+                Calculations(incomingDTOs);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"{e.Message}.\n{e.StackTrace}");
+            }
+            //} while (!string.IsNullOrEmpty(fileLocation));
         }
 
         public static Tuple<IEnumerable<object>, IEnumerable<object>> Calculations(List<IncomingDTO> incomingDTOs)
