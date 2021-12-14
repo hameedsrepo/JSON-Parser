@@ -10,6 +10,8 @@ This project has unit tests to test the JSON Parser project
 ### BlackBoxTesting
 This is a project in the solution to represent how we could implement black box testing (not knowing anything about the inner workings of the code to test).
 
+I don't actually implement the logic to parse the file itself and calculate what I think it should be as I already have in the JSON Parser Project.  I just hard coded the expected values for my two test files.  In a real life scenario I would actually implement said logic since I will most likely not be the developer of the code in test.
+
 ___
 
 ## **The Problem:**
