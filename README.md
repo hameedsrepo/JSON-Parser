@@ -1,21 +1,30 @@
-# JSON-Parser
+# JSON Parser Solution
+### JSON Parser Project
 This project was created with the intent of completing a coding assessment for Opentext/Webroot.
 
 This solution requires Visual Studio 2019 (Community edition is available from the MSDN website free of charge)
 
+### JSON Parser Unit Test
+This project has unit tests to test the JSON Parser project
+
+### BlackBoxTesting
+This is a project in the solution to represent how we could implement black box testing (not knowing anything about the inner workings of the code to test).
+
+I don't actually implement the logic to parse the file itself and calculate what I think it should be as I already have in the JSON Parser Project.  I just hard coded the expected values for my two test files.  In a real life scenario I would actually implement said logic since I will most likely not be the developer of the code in test.
+
+___
+
 ## **The Problem:**
 Given a set of JSON objects (in a file is fine), for each unique ID field show the unique IPs associated with it and the number of times that IP appeared.  Also, sum the score for that ID.  Make no assumptions about the incoming JSON.
 
-## **Example input:**
+### **Example input:**
 
 {"id":"test","score":12,"ip":"1.2.3.4","message":"Hi"}
 {"id":"test","score":5,"ip":"1.2.3.5"}
 {"id":"test","score":17,"ip":"1.2.3.4"}
 {"id":"test2","score":9,"ip":"1.2.3.4"}
 
- 
-
-## **Example output:**
+### **Example output:**
 
 ### test:
     1.2.3.5: 1
